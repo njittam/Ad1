@@ -101,6 +101,8 @@ public class Node {
     }
     public static int swap (Leaf a, Leaf b){
        // System.out.println(a  + ", " + b);
+        //System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+       // a.getRoot().print("",false);
         boolean aisleft = a.isLeftChild();
         boolean bisleft = b.isLeftChild();
         if (aisleft){
@@ -118,6 +120,9 @@ public class Node {
         b.setParent(t);
         a.fixWeight();
         b.fixWeight();
+        //System.out.println("-------------------------------------------------------------");
+       // a.getRoot().print("", true);
+      //  System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         if (a.swapped && b.swapped){
             return -1;
         }else if(a.swapped || b.swapped) {

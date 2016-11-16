@@ -1,28 +1,10 @@
 public class Algorithm {
 
-    private static Red findRedNode(Node root){
-        if (root instanceof Red){
-            return (Red) root;
-        }else if (root instanceof Black){
-            return null;
-        }else if (root instanceof Rod) {
-            Rod rootRod = (Rod) root;
-            if (rootRod.equalWeight()){
-                Red l = findRedNode(rootRod.getLeft());
-                if (l == null){
-                    return findRedNode(rootRod.getRight());
-                }else{
-                    return l;
-                }
-            }else {
-                return findRedNode(rootRod.getHeaviest());
-            }
-        } else {
-            return null;
-        }
 
-    }
-
+    /**
+     * @param node
+     * @return
+     */
     private static Integer fixCurrentNode(Rod node){
         Integer switches = 0;
         int reds = node.getWeight();
@@ -51,6 +33,40 @@ public class Algorithm {
         }
         return switches;
     }
+    /**
+     * zoek een red node in de tree waarvan zeker is dat: als deze weggehaald wordt het de stable state van parents niet aantast.
+     * @param root de root van de tree waarin gekeken moet worden.
+     * @return de gevonden kandidaat.
+     */
+    private static Red findRedNode(Node root){
+        if (root instanceof Red){
+            return (Red) root;
+        }else if (root instanceof Black){
+            return null;
+        }else if (root instanceof Rod) {
+            Rod rootRod = (Rod) root;
+            if (rootRod.equalWeight()){
+                Red l = findRedNode(rootRod.getLeft());
+                if (l == null){
+                    return findRedNode(rootRod.getRight());
+                }else{
+                    return l;
+                }
+            }else {
+                return findRedNode(rootRod.getHeaviest());
+            }
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * zoek een Black node in de tree waarvan zeker is dat: als deze weggehaald wordt het de stable state van parents niet aantast.
+     * deze versie kijkt niet verder als de
+     * @param node de root van de tree waarin gekeken moet worden.
+     * @return de gevonden kandidaat.
+     */
     private static Black findBlackNode1(Node node){
         if (node instanceof Red){
             return null;
@@ -97,15 +113,15 @@ public class Algorithm {
             if (n == null){
                 l = findBlackNode(r.getLeft());
                 if (l == null){
-                    return findBlackNode(r.getRight());
+                    return findBlackNode(r.getLeft());
                 }else {
                     return l;
                 }
             }else{
                 l = findBlackNode(n);
-                if (l == null ){
+                if (l == null){
                     return findBlackNode(r.getHeaviest());
-                } else {
+                }else {
                     return l;
                 }
             }
@@ -113,13 +129,24 @@ public class Algorithm {
             return null;
         }
     }
+    /**
+     * zoek een Black node in de tree waarvan zeker is dat: als deze weggehaald wordt het de stable state van parents niet aantast.
+     * @param node de root van de tree waarin gekeken moet worden.
+     * @return de gevonden kandidaat.
+     */
     private static Black findBlackNode(Node node){
         Black b = findBlackNode1(node);
-        if (b == null||true){
+        if (b == null){
             b = findBlackNode2(node);
         }
         return b;
     }
+
+    /**
+     * find het minimum aantal swaps om een boom balanced te maken.
+     * @param root de root van de boom.
+     * @return het aantal swaps of "discard' als het niet mogelijk is om de boom balanced te maken..
+     */
     public static String algorithm(Node  root){
         Integer r = algorithmRun(root);
         if (r== null){
